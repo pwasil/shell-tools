@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Set variables
+block_device_name="/dev/sda"
+device_hostname="localhost"
+hard_erase_device="no"
+
+file_mkinitcpio_conf='/mnt/etc/mkinitcpio.conf'
+file_default_grub='/mnt/etc/default/grub'
+file_etc_fstab='/mnt/etc/fstab'
+
+crypt_vol_name="cryptroot"
+root_vg_name="rootvg"
+
+default_user_name="ansible"
+default_user_comment="Ansible automation user (local)"
+default_user_uid="512"
+
+# Get the encryption password
+while [[ true ]]; do
+  echo -n 'Please type the disk encryption password: '
+  read -s luks_password
+  echo
+  echo -n 'Please retype the disk encryption password: '
+  read -s luks_password2
+  echo
+  [[ "${luks_password}" == "${luks_password2}" ]] && break || echo 'Passwords do not match!'
+done
