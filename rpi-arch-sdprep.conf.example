@@ -1,0 +1,12 @@
+#!/bin/bash
+
+host_name='rpi'
+device_name='/dev/sdX'
+
+file_image="ArchLinuxARM-rpi-latest.tar.gz"
+file_image="ArchLinuxARM-rpi-2-latest.tar.gz"
+image_url="http://os.archlinuxarm.org/os/${file_image}"
+
+default_user_name="ansible"
+default_user_comment="Ansible automation user (local)"
+default_user_uid="512"
