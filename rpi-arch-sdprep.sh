@@ -14,6 +14,11 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Check if all args are set
+if [[ "$(whoami)" != "root" ]]; then
+    echo "[err] you need to be root to run this. exitting..."
+    exit 1
+fi
+
 if [[ ! -b "${block_device_name}" ]]; then
     echo "[err] missing or incorrect device name"
     exit 1
@@ -29,7 +34,7 @@ if [[ ! -f "${file_image_dir}/${file_image_name}" ]]; then
 fi
 
 # Umount any already mounted drives
-for i in "${block_device_name}*"; do
+for i in "$(ls /dev/${block_device_name}*)"; do
     echo "[log] umounting "${i}" ..."
     umount "${i}"
 done
@@ -65,13 +70,13 @@ echo "%wheel ALL=(ALL) ALL" >> "root/etc/sudoers"
 echo "%ansible ALL=(ALL) ALL" >> "root/etc/sudoers"
 
 # Create default user account
-#useradd --root "${temp_dir}/root/" \
-#        --create-home \
-#        --user-group \
-#        --system \
-#        --uid "${default_user_uid}" \
-#        --comment "${default_user_comment}" \
-#        "${default_user_name}"
+useradd --root "${temp_dir}/root/" \
+        --create-home \
+        --user-group \
+        --system \
+        --uid "${default_user_uid}" \
+        --comment "${default_user_comment}" \
+        "${default_user_name}"
 
 # Exit
 umount boot root
